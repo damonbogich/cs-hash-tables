@@ -21,7 +21,8 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
+        self.capacity = capacity
+        self.table = [[] for i in range(capacity)]
 
 
     def get_num_slots(self):
@@ -62,7 +63,10 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
+        hash = 5381
+        for c in key:
+            hash = (hash * 33) + ord(c)
+        return hash
 
 
     def hash_index(self, key):
@@ -81,8 +85,12 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-
+        #1. hash key
+        # key_hash = self.djb2(key)
+        #2. modulo that result with the length of our list
+        hashed_key = self.hash_index(key)
+        #3. use that index to store value
+        self.table[hashed_key] = value
 
     def delete(self, key):
         """
@@ -92,7 +100,22 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        #first we need to check if given key is in hash table
+        
+        #1. hash the key value 
+        
+        #2. get the hashed_key index
+        hashed_key = self.hash_index(key)
+        #3. see if that index is in table
+        if self.table[hashed_key] is not None:
+            self.table[hashed_key] = None
+        else:
+            print('warning: that key is not found in hash-table')
+
+
+
+        #if it is delete it
+        #else: print warning
 
 
     def get(self, key):
@@ -103,7 +126,16 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # find key's hashed value
+        # hashed_key = self.djb2(key)
+        # find index by taking hash % length of array
+        searched_index = self.hash_index(key)
+        # return value at that index
+            #if none return none
+        if self.table[searched_index] is None:
+            return None
+        else:
+            return self.table[searched_index]
 
 
     def resize(self, new_capacity):
