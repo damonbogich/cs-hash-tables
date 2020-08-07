@@ -33,3 +33,37 @@ sorted_letter_counts = sorted(letter_counts.items(), key=lambda pair: pair[1], r
 for pair in sorted_letter_counts:
     print(pair[0])
 
+# ignore: " : ; , . - + = / \ | [ ] { } ( ) * ^ &
+ignore = [ '"', ":", ";", ",", ".", "-", "+", "/", "|", "[", "]", "(", ")", "*", "^", "&" ]
+# ignore_symbol = "\"
+#step 1: take a string and split it into list of seperate words, lowercase all words in list
+sentence = "Damon likes basketball."
+split_sentence = sentence.split()
+split_sentence = [i.lower() for i in split_sentence] #this lowercases everything in list
+print(split_sentence)
+
+for i in split_sentence:
+    for j in ignore:
+        if i.find(j) != -1:
+            i.replace(j, '')
+        # else:
+        #     # print('-1')
+print(split_sentence)
+
+word_dict = {}
+
+for word in split_sentence:
+    if word in word_dict:
+        print('foundit')
+        word_dict[word] += 1
+    else:
+        word_dict[word] = 1
+
+print(word_dict)
+
+one = 'on.e'
+two = '.'
+three = '!'
+four = 'p'
+
+print(one.find(four))
