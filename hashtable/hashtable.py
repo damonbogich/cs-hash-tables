@@ -115,6 +115,10 @@ class HashTable:
                         current = current.next
                     else:
                         current.next = HashTableEntry(key, value)
+                        self.total_items += 1
+                        self.load_factor = self.total_items / self.capacity
+                        if self.load_factor > .7:
+                            self.resize(self.capacity * 2)
 
             # print(self.table[hashed_key].head)
 

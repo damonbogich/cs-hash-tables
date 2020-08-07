@@ -1,26 +1,44 @@
 # ignore: " : ; , . - + = / \ | [ ] { } ( ) * ^ &
-ignore = [ '"', ":", ";", ",", ".", "-", "+", "/", "|", "[", "]", "(", ")", "*", "^", "&" ]
-# ignore_symbol = "\"
+ignore = [ "\\", '"', ":", ";", ",", ".", "-", "+", "/", "|", "[", "]", "(", ")", "*", "^", "&", "=", "{", "}" ]
+
 #step 1: take a string and split it into list of seperate words, lowercase all words in list
-sentence = "Damon likes basketball."
-print(sentence.split())
+sentence = '":;,.-+=/\\|[]{}()*^&'
+# split_sentence = sentence.split()
+# split_sentence = [i.lower() for i in split_sentence] #this lowercases everything in list
+# print(split_sentence)
+
+for char in sentence:
+    print(char)
+    for j in ignore:
+        if char.find(j) != -1:
+            print(j)
+            sentence = sentence.replace(j, '')
+            print(sentence)
+        # else:
+        #     print('-1')
+    
+print(sentence)
+# print(split_sentence)
 split_sentence = sentence.split()
 split_sentence = [i.lower() for i in split_sentence] #this lowercases everything in list
-print(split_sentence) 
+print(split_sentence)
 
 
 
+word_dict = {}
 
-#how do i get rid of the special characters in my words??
+for word in split_sentence:
+    if word in word_dict:
+        print('foundit')
+        word_dict[word] += 1
+    else:
+        word_dict[word] = 1
 
+print(word_dict)
 
-# turn the split list into a dictionary:
-count = 0
-word_dictionary = dict.fromkeys(split_sentence, count)
-print(word_dictionary)
-#step 2: if the string contains any of the symbols that are in "ignore" list
-    #make the dictionary keys all of the words in the list
-    #their value should be the number of times that word is mentioned  
+# one = 'on.e'
+# two = '.'
+# three = '!'
+# four = 'p'
 
-    #if the string does not contain any of the symbols that are in "ignore" list 
-        #function should return an empty dictionary
+# print(one.find(four))
