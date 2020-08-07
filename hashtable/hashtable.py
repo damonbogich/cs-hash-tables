@@ -21,7 +21,14 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
+        if capacity < MIN_CAPACITY:
+            self.capacity = MIN_CAPACITY
+        else:
+            self.capacity = capacity
+        self.capacity = capacity
+        self.table = [None for i in range(capacity)]
+        self.total_items = 0
+        self.load_factor = 0
 
 
     def get_num_slots(self):
@@ -34,7 +41,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return len(self.table)
 
 
     def get_load_factor(self):
@@ -43,7 +50,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return self.load_factor
 
 
     def fnv1(self, key):
@@ -62,7 +69,10 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
+        hash = 5381
+        for c in key:
+            hash = (hash * 33) + ord(c)
+        return hash
 
 
     def hash_index(self, key):
@@ -81,8 +91,38 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        
+        #get the index for the key:
+        hashed_key = self.hash_index(key)
+        
+        #check that index to see if anything is there:
+        #if nothing is there, put linked List there and add entry to its head
+        if self.table[hashed_key] == None:
+            self.table[hashed_key] = HashTableEntry(key,value)
+            self.total_items += 1
+            self.load_factor = self.total_items / self.capacity
+            if self.load_factor > .7:
+                self.resize(self.capacity * 2)
+          
+        else: 
+            current = self.table[hashed_key]
+            while current is not None:
+                if current.key == key:
+                    current.value = value
+                    return 
+                else:
+                    if current.next is not None:
+                        current = current.next
+                    else:
+                        current.next = HashTableEntry(key, value)
+                        self.total_items += 1
+                        self.load_factor = self.total_items / self.capacity
+                        if self.load_factor > .7:
+                            self.resize(self.capacity * 2)
 
+            # print(self.table[hashed_key].head)
+
+        
 
     def delete(self, key):
         """
@@ -92,7 +132,22 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        #find key's index
+        index = self.hash_index(key)
+
+        if self.table[index] == None:
+            print('could not find that key')
+        else:
+            current = self.table[index]
+            while current is not None:
+                #if current is first node
+                if current.key == key:
+                    self.table[index] = current.next
+                    current.next = None
+                    return current.value
+                else:
+                    current = current.next
+            print('could not find that key')
 
 
     def get(self, key):
@@ -103,7 +158,19 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        #finds the index to look at 
+        searched_index = self.hash_index(key)
+        
+        if self.table[searched_index] == None:
+            return None
+        else:
+            current = self.table[searched_index]
+            while current is not None:
+                if current.key == key:
+                    return current.value
+                else:
+                    current = current.next
+            return None
 
 
     def resize(self, new_capacity):
@@ -113,7 +180,25 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        self.capacity = new_capacity
+        previous_table = self.table
+        self.table = [None for i in range(new_capacity)]
+        for item in previous_table:
+            if item is not None:
+                current = item
+                while current is not None:
+                    self.put(current.key, current.value)
+                    current = current.next
+
+
+
+ht = HashTable(8)
+
+ht.put("key-0", "val-0")
+
+
+
+
 
 
 
